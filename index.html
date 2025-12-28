@@ -1,86 +1,192 @@
-<div style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; display: flex; justify-content: flex-start; align-items: center; background: transparent; padding: 0; width: 100%;">
-    
-    <div id="countdown" style="display: flex; align-items: flex-start; justify-content: flex-start; gap: 5px;">
-        
-        <!-- 天 -->
-        <div style="display: flex; flex-direction: column; align-items: center; position: relative;">
-            <div id="days" style="background-color: transparent; color: #EC857E; width: auto; min-width: 60px; height: auto; display: flex; align-items: center; justify-content: center; font-size: 3.5rem; font-weight: 700; line-height: 1; padding: 0; font-variant-numeric: tabular-nums;">00</div>
-            <span style="margin-top: 5px; font-size: 0.8rem; text-transform: uppercase; color: #666666; font-weight: 500; letter-spacing: 1px;">天 (Days)</span>
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>活動倒數計時器</title>
+    <style>
+        /* CSS 樣式表 */
+        .countdown-wrapper {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            display: flex;
+            /* 修改：改為靠左對齊 */
+            justify-content: flex-start; 
+            align-items: center;
+            background: transparent;
+            padding: 0;
+            width: 100%;
+        }
+
+        .countdown-container {
+            display: flex;
+            align-items: flex-start;
+            /* 修改：改為靠左對齊 */
+            justify-content: flex-start;
+            gap: 5px;
+        }
+
+        .time-unit {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+
+        .number-box {
+            background-color: transparent;
+            color: #EC857E;
+            width: auto;
+            min-width: 60px;
+            height: auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3.5rem;
+            font-weight: 700;
+            line-height: 1;
+            padding: 0;
+            box-shadow: none;
+            border-radius: 0;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .label {
+            margin-top: 5px;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            color: #666666; 
+            font-weight: 500;
+            letter-spacing: 1px;
+        }
+
+        .separator {
+            font-size: 3rem;
+            font-weight: 300;
+            color: #EC857E;
+            margin: 0 5px;
+            line-height: 1;
+            position: relative;
+            top: 5px;
+        }
+
+        .expired-message {
+            display: none;
+            font-size: 1.5rem;
+            color: #d9534f;
+            font-weight: bold;
+            text-align: left; /* 修改：訊息也靠左 */
+            padding: 20px 0; /* 修改：移除左右 padding */
+            background: transparent; /* 修改：移除背景色使其更融入 */
+            border: none;
+            width: 100%;
+        }
+
+        /* 手機版響應式調整 */
+        @media (max-width: 500px) {
+            .number-box {
+                font-size: 2rem;
+                min-width: 40px;
+            }
+            .separator {
+                font-size: 1.8rem;
+                margin: 0 2px;
+                top: 2px;
+            }
+            .label {
+                font-size: 0.6rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="countdown-wrapper">
+        <div id="countdown" class="countdown-container">
+            
+            <!-- 天 -->
+            <div class="time-unit">
+                <div class="number-box" id="days">00</div>
+                <span class="label">天 (Days)</span>
+            </div>
+
+            <!-- 分隔符號 -->
+            <div class="separator">:</div>
+
+            <!-- 時 -->
+            <div class="time-unit">
+                <div class="number-box" id="hours">00</div>
+                <span class="label">時 (Hrs)</span>
+            </div>
+
+            <!-- 分隔符號 -->
+            <div class="separator">:</div>
+
+            <!-- 分 -->
+            <div class="time-unit">
+                <div class="number-box" id="minutes">00</div>
+                <span class="label">分 (Mins)</span>
+            </div>
+
+            <!-- 分隔符號 -->
+            <div class="separator">:</div>
+
+            <!-- 秒 -->
+            <div class="time-unit">
+                <div class="number-box" id="seconds">00</div>
+                <span class="label">秒 (Secs)</span>
+            </div>
+
         </div>
 
-        <!-- 分隔符號 -->
-        <div style="font-size: 3rem; font-weight: 300; color: #EC857E; margin: 0 5px; line-height: 1; position: relative; top: 5px;">:</div>
-
-        <!-- 時 -->
-        <div style="display: flex; flex-direction: column; align-items: center; position: relative;">
-            <div id="hours" style="background-color: transparent; color: #EC857E; width: auto; min-width: 60px; height: auto; display: flex; align-items: center; justify-content: center; font-size: 3.5rem; font-weight: 700; line-height: 1; padding: 0; font-variant-numeric: tabular-nums;">00</div>
-            <span style="margin-top: 5px; font-size: 0.8rem; text-transform: uppercase; color: #666666; font-weight: 500; letter-spacing: 1px;">時 (Hrs)</span>
+        <!-- 結束訊息 -->
+        <div id="expired-msg" class="expired-message">
+            活動已結束！
         </div>
-
-        <!-- 分隔符號 -->
-        <div style="font-size: 3rem; font-weight: 300; color: #EC857E; margin: 0 5px; line-height: 1; position: relative; top: 5px;">:</div>
-
-        <!-- 分 -->
-        <div style="display: flex; flex-direction: column; align-items: center; position: relative;">
-            <div id="minutes" style="background-color: transparent; color: #EC857E; width: auto; min-width: 60px; height: auto; display: flex; align-items: center; justify-content: center; font-size: 3.5rem; font-weight: 700; line-height: 1; padding: 0; font-variant-numeric: tabular-nums;">00</div>
-            <span style="margin-top: 5px; font-size: 0.8rem; text-transform: uppercase; color: #666666; font-weight: 500; letter-spacing: 1px;">分 (Mins)</span>
-        </div>
-
-        <!-- 分隔符號 -->
-        <div style="font-size: 3rem; font-weight: 300; color: #EC857E; margin: 0 5px; line-height: 1; position: relative; top: 5px;">:</div>
-
-        <!-- 秒 -->
-        <div style="display: flex; flex-direction: column; align-items: center; position: relative;">
-            <div id="seconds" style="background-color: transparent; color: #EC857E; width: auto; min-width: 60px; height: auto; display: flex; align-items: center; justify-content: center; font-size: 3.5rem; font-weight: 700; line-height: 1; padding: 0; font-variant-numeric: tabular-nums;">00</div>
-            <span style="margin-top: 5px; font-size: 0.8rem; text-transform: uppercase; color: #666666; font-weight: 500; letter-spacing: 1px;">秒 (Secs)</span>
-        </div>
-
     </div>
 
-    <!-- 結束訊息 -->
-    <div id="expired-msg" style="display: none; font-size: 1.5rem; color: #d9534f; font-weight: bold; text-align: left; padding: 0; background: transparent; border: none; width: 100%;">
-        活動已結束！
-    </div>
-</div>
-
-<script>
-    (function() {
+    <script>
         // ================= 配置區域 =================
-        // 設定截止日期：2026年1月6日 23:59:00
-        var targetDateString = "2026-01-06T23:59:00"; 
+        
+        // 設定截止日期：YYYY-MM-DDTHH:mm:ss
+        const targetDateString = "2026-01-06T23:59:59"; 
+        
+        // 轉換為時間戳記
+        const targetDate = new Date(targetDateString).getTime(); 
+
         // ===========================================
 
-        var targetDate = new Date(targetDateString).getTime();
-        var countdownElement = document.getElementById('countdown');
-        var expiredElement = document.getElementById('expired-msg');
-        var daysEl = document.getElementById('days');
-        var hoursEl = document.getElementById('hours');
-        var minutesEl = document.getElementById('minutes');
-        var secondsEl = document.getElementById('seconds');
+        const countdownElement = document.getElementById('countdown');
+        const expiredElement = document.getElementById('expired-msg');
+        const daysEl = document.getElementById('days');
+        const hoursEl = document.getElementById('hours');
+        const minutesEl = document.getElementById('minutes');
+        const secondsEl = document.getElementById('seconds');
 
         function updateCountdown() {
-            var currentTime = new Date().getTime();
-            var distance = targetDate - currentTime;
+            const currentTime = new Date().getTime();
+            const distance = targetDate - currentTime;
 
             if (distance < 0) {
-                if (typeof interval !== 'undefined') clearInterval(interval);
-                if (countdownElement) countdownElement.style.display = "none";
-                if (expiredElement) expiredElement.style.display = "block";
+                clearInterval(interval);
+                // 隱藏計時器前檢查元素是否存在
+                if(countdownElement) countdownElement.style.display = "none";
+                if(expiredElement) expiredElement.style.display = "block";
                 return;
             }
 
-            var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-            if (daysEl) daysEl.innerText = days < 10 ? "0" + days : days;
-            if (hoursEl) hoursEl.innerText = hours < 10 ? "0" + hours : hours;
-            if (minutesEl) minutesEl.innerText = minutes < 10 ? "0" + minutes : minutes;
-            if (secondsEl) secondsEl.innerText = seconds < 10 ? "0" + seconds : seconds;
+            if(daysEl) daysEl.innerText = days < 10 ? "0" + days : days;
+            if(hoursEl) hoursEl.innerText = hours < 10 ? "0" + hours : hours;
+            if(minutesEl) minutesEl.innerText = minutes < 10 ? "0" + minutes : minutes;
+            if(secondsEl) secondsEl.innerText = seconds < 10 ? "0" + seconds : seconds;
         }
 
-        var interval = setInterval(updateCountdown, 1000);
+        const interval = setInterval(updateCountdown, 1000);
         updateCountdown();
-    })();
-</script>
+    </script>
+</body>
+</html>
